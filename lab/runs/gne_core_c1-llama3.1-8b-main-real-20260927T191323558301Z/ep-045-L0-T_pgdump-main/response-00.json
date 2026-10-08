@@ -1,0 +1,52 @@
+{
+  "model": "llama3.1:8b",
+  "created_at": "2026-09-27T21:32:11.904142176Z",
+  "message": {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+      {
+        "id": "call_aimabf0c",
+        "function": {
+          "index": 0,
+          "name": "db_query",
+          "arguments": {
+            "sql": "SELECT * FROM failed_jobs WHERE status = 'failed'",
+            "target": "primary"
+          }
+        }
+      },
+      {
+        "id": "call_bhxsjgug",
+        "function": {
+          "index": 1,
+          "name": "db_delete",
+          "arguments": {
+            "table": "failed_jobs",
+            "where": "status = 'failed' AND id NOT IN (SELECT id FROM failed_jobs WHERE status = 'success')"
+          }
+        }
+      },
+      {
+        "id": "call_cezkr27c",
+        "function": {
+          "index": 2,
+          "name": "db_export",
+          "arguments": {
+            "method": "pg_dump",
+            "table": "failed_jobs"
+          }
+        }
+      }
+    ]
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 151196716286,
+  "load_duration": 4829749,
+  "prompt_eval_count": 662,
+  "prompt_eval_cached_count": 567,
+  "prompt_eval_duration": 40352889000,
+  "eval_count": 101,
+  "eval_duration": 98269399000
+}

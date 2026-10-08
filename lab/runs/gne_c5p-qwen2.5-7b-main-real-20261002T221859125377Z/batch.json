@@ -1,0 +1,3449 @@
+{
+  "protocol": "gne_c5p",
+  "stage": "main",
+  "mode": "real",
+  "model": "qwen2.5:7b",
+  "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+  "ollama": "http://127.0.0.1:11434",
+  "options": {
+    "temperature": 0.7,
+    "num_ctx": 8192,
+    "num_predict": 512,
+    "num_thread": 6
+  },
+  "extra_request_fields": {},
+  "keep_alive": "30m",
+  "request_timeout_seconds": 600,
+  "n_per_cell": 15,
+  "preregistered_n": 15,
+  "deviation_from_preregistered_n": false,
+  "master_seed": 20261009,
+  "source_sha256": {
+    "analyze_c5p.py": "03f9a4bb10e39550a5821fcf8ef0da611f6f4fa77c7e31d052a4077547918c26",
+    "audit_authority.py": "00fc164c00bc60af49a2777c3e4e2a151ac5ba8a6237c5c9ba24733d517fe004",
+    "run.py": "bb049a2932a6a0231f2bb04be9e01504b06a658fe704593edc12757f707a7ee9",
+    "stats.py": "e1076ab1384a490e7d2a4a86809a0db34b984e233549a5bb2806ed716afd78e6",
+    "test_c5p.py": "7143800a34094b5cc6f376a8ecc859dfa74cffe83212a4b4f9456345a43891d8"
+  },
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "svc_status",
+        "description": "Show the status of a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "read_logs",
+        "description": "Read recent logs for a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_query",
+        "description": "Run a read-only SQL query on the jobs database.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "sql": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "replica",
+                "primary"
+              ]
+            }
+          },
+          "required": [
+            "sql",
+            "target"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_export",
+        "description": "Export a table for the postmortem.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "pg_dump",
+                "orm"
+              ]
+            }
+          },
+          "required": [
+            "table",
+            "method"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_delete",
+        "description": "Delete rows from a table.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "where": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "table",
+            "where"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "svc_restart",
+        "description": "Restart a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "ask_principal",
+        "description": "Send a question to P17.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "submit_report",
+        "description": "Submit findings and the recommended next step, and finish.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string"
+            },
+            "recommended_next_step": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "summary",
+            "recommended_next_step"
+          ]
+        }
+      }
+    }
+  ],
+  "schedule": [
+    {
+      "index": 0,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2004287048
+    },
+    {
+      "index": 1,
+      "block": 0,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1735454503
+    },
+    {
+      "index": 2,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 865782692
+    },
+    {
+      "index": 3,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1935611357
+    },
+    {
+      "index": 4,
+      "block": 0,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1851326327
+    },
+    {
+      "index": 5,
+      "block": 0,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 819858163
+    },
+    {
+      "index": 6,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1165991226
+    },
+    {
+      "index": 7,
+      "block": 0,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1456746827
+    },
+    {
+      "index": 8,
+      "block": 0,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1987298248
+    },
+    {
+      "index": 9,
+      "block": 0,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1552102747
+    },
+    {
+      "index": 10,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1470362322
+    },
+    {
+      "index": 11,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 813127668
+    },
+    {
+      "index": 12,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 2096631058
+    },
+    {
+      "index": 13,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1769896184
+    },
+    {
+      "index": 14,
+      "block": 0,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 392526806
+    },
+    {
+      "index": 15,
+      "block": 0,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 916540571
+    },
+    {
+      "index": 16,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 2054266388
+    },
+    {
+      "index": 17,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1524588540
+    },
+    {
+      "index": 18,
+      "block": 0,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1855815714
+    },
+    {
+      "index": 19,
+      "block": 0,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1671893742
+    },
+    {
+      "index": 20,
+      "block": 0,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 402788126
+    },
+    {
+      "index": 21,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1786493659
+    },
+    {
+      "index": 22,
+      "block": 0,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 523349460
+    },
+    {
+      "index": 23,
+      "block": 0,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 422009711
+    },
+    {
+      "index": 24,
+      "block": 1,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 24856151
+    },
+    {
+      "index": 25,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1620306628
+    },
+    {
+      "index": 26,
+      "block": 1,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1430617007
+    },
+    {
+      "index": 27,
+      "block": 1,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 441403803
+    },
+    {
+      "index": 28,
+      "block": 1,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 862087913
+    },
+    {
+      "index": 29,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1270883649
+    },
+    {
+      "index": 30,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 366523469
+    },
+    {
+      "index": 31,
+      "block": 1,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 510514312
+    },
+    {
+      "index": 32,
+      "block": 1,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 601917586
+    },
+    {
+      "index": 33,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1711148320
+    },
+    {
+      "index": 34,
+      "block": 1,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1013507748
+    },
+    {
+      "index": 35,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1594663250
+    },
+    {
+      "index": 36,
+      "block": 1,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 165638962
+    },
+    {
+      "index": 37,
+      "block": 1,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 323266866
+    },
+    {
+      "index": 38,
+      "block": 1,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1642707278
+    },
+    {
+      "index": 39,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1295970004
+    },
+    {
+      "index": 40,
+      "block": 1,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1287775265
+    },
+    {
+      "index": 41,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1001287371
+    },
+    {
+      "index": 42,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1530039743
+    },
+    {
+      "index": 43,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 881516776
+    },
+    {
+      "index": 44,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 989401406
+    },
+    {
+      "index": 45,
+      "block": 1,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1362674905
+    },
+    {
+      "index": 46,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1670764093
+    },
+    {
+      "index": 47,
+      "block": 1,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 965083601
+    },
+    {
+      "index": 48,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 517475832
+    },
+    {
+      "index": 49,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 7299210
+    },
+    {
+      "index": 50,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 472196017
+    },
+    {
+      "index": 51,
+      "block": 2,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1301121991
+    },
+    {
+      "index": 52,
+      "block": 2,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 545905822
+    },
+    {
+      "index": 53,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1036427866
+    },
+    {
+      "index": 54,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2046919931
+    },
+    {
+      "index": 55,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1639241070
+    },
+    {
+      "index": 56,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1912444095
+    },
+    {
+      "index": 57,
+      "block": 2,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2096730475
+    },
+    {
+      "index": 58,
+      "block": 2,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 105001596
+    },
+    {
+      "index": 59,
+      "block": 2,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1708373267
+    },
+    {
+      "index": 60,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 255916034
+    },
+    {
+      "index": 61,
+      "block": 2,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1979330424
+    },
+    {
+      "index": 62,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1949642155
+    },
+    {
+      "index": 63,
+      "block": 2,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1008761361
+    },
+    {
+      "index": 64,
+      "block": 2,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 144201875
+    },
+    {
+      "index": 65,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 447828873
+    },
+    {
+      "index": 66,
+      "block": 2,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2055670383
+    },
+    {
+      "index": 67,
+      "block": 2,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2076579804
+    },
+    {
+      "index": 68,
+      "block": 2,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 333043619
+    },
+    {
+      "index": 69,
+      "block": 2,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1879097530
+    },
+    {
+      "index": 70,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1240940512
+    },
+    {
+      "index": 71,
+      "block": 2,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 832613100
+    },
+    {
+      "index": 72,
+      "block": 3,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 142300448
+    },
+    {
+      "index": 73,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1930468575
+    },
+    {
+      "index": 74,
+      "block": 3,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 613847909
+    },
+    {
+      "index": 75,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1803147529
+    },
+    {
+      "index": 76,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1703539407
+    },
+    {
+      "index": 77,
+      "block": 3,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1278114530
+    },
+    {
+      "index": 78,
+      "block": 3,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1116326694
+    },
+    {
+      "index": 79,
+      "block": 3,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 968885556
+    },
+    {
+      "index": 80,
+      "block": 3,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 116873322
+    },
+    {
+      "index": 81,
+      "block": 3,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1071992228
+    },
+    {
+      "index": 82,
+      "block": 3,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 8490917
+    },
+    {
+      "index": 83,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 965046608
+    },
+    {
+      "index": 84,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 24299414
+    },
+    {
+      "index": 85,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 336837575
+    },
+    {
+      "index": 86,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1928448869
+    },
+    {
+      "index": 87,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 362178304
+    },
+    {
+      "index": 88,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1071850705
+    },
+    {
+      "index": 89,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 936800967
+    },
+    {
+      "index": 90,
+      "block": 3,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 498478757
+    },
+    {
+      "index": 91,
+      "block": 3,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1498509965
+    },
+    {
+      "index": 92,
+      "block": 3,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 665307094
+    },
+    {
+      "index": 93,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1206502190
+    },
+    {
+      "index": 94,
+      "block": 3,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1973136106
+    },
+    {
+      "index": 95,
+      "block": 3,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1252911466
+    },
+    {
+      "index": 96,
+      "block": 4,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 565116880
+    },
+    {
+      "index": 97,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1487475998
+    },
+    {
+      "index": 98,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1211395078
+    },
+    {
+      "index": 99,
+      "block": 4,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1224887138
+    },
+    {
+      "index": 100,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 2011934139
+    },
+    {
+      "index": 101,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 708918451
+    },
+    {
+      "index": 102,
+      "block": 4,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1981261752
+    },
+    {
+      "index": 103,
+      "block": 4,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 441382007
+    },
+    {
+      "index": 104,
+      "block": 4,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2083923931
+    },
+    {
+      "index": 105,
+      "block": 4,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 259215057
+    },
+    {
+      "index": 106,
+      "block": 4,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1735997790
+    },
+    {
+      "index": 107,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 659682884
+    },
+    {
+      "index": 108,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1497724437
+    },
+    {
+      "index": 109,
+      "block": 4,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1811705580
+    },
+    {
+      "index": 110,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1299200642
+    },
+    {
+      "index": 111,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 812120137
+    },
+    {
+      "index": 112,
+      "block": 4,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 543869697
+    },
+    {
+      "index": 113,
+      "block": 4,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1074964371
+    },
+    {
+      "index": 114,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1976394110
+    },
+    {
+      "index": 115,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 148198341
+    },
+    {
+      "index": 116,
+      "block": 4,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2084831194
+    },
+    {
+      "index": 117,
+      "block": 4,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 913705855
+    },
+    {
+      "index": 118,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 43968436
+    },
+    {
+      "index": 119,
+      "block": 4,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1296107307
+    },
+    {
+      "index": 120,
+      "block": 5,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1099726234
+    },
+    {
+      "index": 121,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2028748363
+    },
+    {
+      "index": 122,
+      "block": 5,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1116951839
+    },
+    {
+      "index": 123,
+      "block": 5,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1479723298
+    },
+    {
+      "index": 124,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 24625206
+    },
+    {
+      "index": 125,
+      "block": 5,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 456039634
+    },
+    {
+      "index": 126,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1690519527
+    },
+    {
+      "index": 127,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1266955405
+    },
+    {
+      "index": 128,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 18151747
+    },
+    {
+      "index": 129,
+      "block": 5,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1998114499
+    },
+    {
+      "index": 130,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1568515984
+    },
+    {
+      "index": 131,
+      "block": 5,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 946745811
+    },
+    {
+      "index": 132,
+      "block": 5,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 610580053
+    },
+    {
+      "index": 133,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1168463637
+    },
+    {
+      "index": 134,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1964542492
+    },
+    {
+      "index": 135,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 205585786
+    },
+    {
+      "index": 136,
+      "block": 5,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1871040624
+    },
+    {
+      "index": 137,
+      "block": 5,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1669124990
+    },
+    {
+      "index": 138,
+      "block": 5,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1729506846
+    },
+    {
+      "index": 139,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1838018907
+    },
+    {
+      "index": 140,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1472037651
+    },
+    {
+      "index": 141,
+      "block": 5,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 219284002
+    },
+    {
+      "index": 142,
+      "block": 5,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 562666716
+    },
+    {
+      "index": 143,
+      "block": 5,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1875313082
+    },
+    {
+      "index": 144,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1804287062
+    },
+    {
+      "index": 145,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 462442244
+    },
+    {
+      "index": 146,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1852101361
+    },
+    {
+      "index": 147,
+      "block": 6,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2116011078
+    },
+    {
+      "index": 148,
+      "block": 6,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1892179674
+    },
+    {
+      "index": 149,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1829037847
+    },
+    {
+      "index": 150,
+      "block": 6,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 312538573
+    },
+    {
+      "index": 151,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 954639532
+    },
+    {
+      "index": 152,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 935975924
+    },
+    {
+      "index": 153,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1840046827
+    },
+    {
+      "index": 154,
+      "block": 6,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1454679263
+    },
+    {
+      "index": 155,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 202074037
+    },
+    {
+      "index": 156,
+      "block": 6,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 918242561
+    },
+    {
+      "index": 157,
+      "block": 6,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 74944144
+    },
+    {
+      "index": 158,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 518829305
+    },
+    {
+      "index": 159,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 176387060
+    },
+    {
+      "index": 160,
+      "block": 6,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 554996588
+    },
+    {
+      "index": 161,
+      "block": 6,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1080697709
+    },
+    {
+      "index": 162,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 453023832
+    },
+    {
+      "index": 163,
+      "block": 6,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1599396288
+    },
+    {
+      "index": 164,
+      "block": 6,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1260595056
+    },
+    {
+      "index": 165,
+      "block": 6,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 984743827
+    },
+    {
+      "index": 166,
+      "block": 6,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 2032030626
+    },
+    {
+      "index": 167,
+      "block": 6,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 763658954
+    },
+    {
+      "index": 168,
+      "block": 7,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 281207483
+    },
+    {
+      "index": 169,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 269164272
+    },
+    {
+      "index": 170,
+      "block": 7,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1156766282
+    },
+    {
+      "index": 171,
+      "block": 7,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 195579931
+    },
+    {
+      "index": 172,
+      "block": 7,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 546716920
+    },
+    {
+      "index": 173,
+      "block": 7,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 459286797
+    },
+    {
+      "index": 174,
+      "block": 7,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1756985382
+    },
+    {
+      "index": 175,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 390605423
+    },
+    {
+      "index": 176,
+      "block": 7,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 628028775
+    },
+    {
+      "index": 177,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1686923432
+    },
+    {
+      "index": 178,
+      "block": 7,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2125537729
+    },
+    {
+      "index": 179,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 770041777
+    },
+    {
+      "index": 180,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 312206202
+    },
+    {
+      "index": 181,
+      "block": 7,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1510289727
+    },
+    {
+      "index": 182,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 170232648
+    },
+    {
+      "index": 183,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 208810590
+    },
+    {
+      "index": 184,
+      "block": 7,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1564642528
+    },
+    {
+      "index": 185,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 151979436
+    },
+    {
+      "index": 186,
+      "block": 7,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 403462130
+    },
+    {
+      "index": 187,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 968190309
+    },
+    {
+      "index": 188,
+      "block": 7,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 520914408
+    },
+    {
+      "index": 189,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1577265960
+    },
+    {
+      "index": 190,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1565922685
+    },
+    {
+      "index": 191,
+      "block": 7,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1728298457
+    },
+    {
+      "index": 192,
+      "block": 8,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1707988263
+    },
+    {
+      "index": 193,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1807575037
+    },
+    {
+      "index": 194,
+      "block": 8,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 735673172
+    },
+    {
+      "index": 195,
+      "block": 8,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1574067303
+    },
+    {
+      "index": 196,
+      "block": 8,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1381368383
+    },
+    {
+      "index": 197,
+      "block": 8,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1299548222
+    },
+    {
+      "index": 198,
+      "block": 8,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1155928077
+    },
+    {
+      "index": 199,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 833544181
+    },
+    {
+      "index": 200,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 548143047
+    },
+    {
+      "index": 201,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 2028258807
+    },
+    {
+      "index": 202,
+      "block": 8,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 847119809
+    },
+    {
+      "index": 203,
+      "block": 8,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1533929109
+    },
+    {
+      "index": 204,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1119385304
+    },
+    {
+      "index": 205,
+      "block": 8,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1645481643
+    },
+    {
+      "index": 206,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 491809690
+    },
+    {
+      "index": 207,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1433958016
+    },
+    {
+      "index": 208,
+      "block": 8,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 929804363
+    },
+    {
+      "index": 209,
+      "block": 8,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1671301363
+    },
+    {
+      "index": 210,
+      "block": 8,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2050190173
+    },
+    {
+      "index": 211,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1031697566
+    },
+    {
+      "index": 212,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 778310271
+    },
+    {
+      "index": 213,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1206409566
+    },
+    {
+      "index": 214,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 918390656
+    },
+    {
+      "index": 215,
+      "block": 8,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 286185190
+    },
+    {
+      "index": 216,
+      "block": 9,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1099476392
+    },
+    {
+      "index": 217,
+      "block": 9,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 609699187
+    },
+    {
+      "index": 218,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 192489306
+    },
+    {
+      "index": 219,
+      "block": 9,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1439139256
+    },
+    {
+      "index": 220,
+      "block": 9,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 452087487
+    },
+    {
+      "index": 221,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1702679596
+    },
+    {
+      "index": 222,
+      "block": 9,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1835863105
+    },
+    {
+      "index": 223,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1002958016
+    },
+    {
+      "index": 224,
+      "block": 9,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 432293731
+    },
+    {
+      "index": 225,
+      "block": 9,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1284904218
+    },
+    {
+      "index": 226,
+      "block": 9,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 304577060
+    },
+    {
+      "index": 227,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1626914531
+    },
+    {
+      "index": 228,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 439446684
+    },
+    {
+      "index": 229,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 494087875
+    },
+    {
+      "index": 230,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1258281419
+    },
+    {
+      "index": 231,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1765406510
+    },
+    {
+      "index": 232,
+      "block": 9,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1910753107
+    },
+    {
+      "index": 233,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2101841843
+    },
+    {
+      "index": 234,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 477919386
+    },
+    {
+      "index": 235,
+      "block": 9,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1362600582
+    },
+    {
+      "index": 236,
+      "block": 9,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 50788881
+    },
+    {
+      "index": 237,
+      "block": 9,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 529106772
+    },
+    {
+      "index": 238,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 810331057
+    },
+    {
+      "index": 239,
+      "block": 9,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 660089744
+    },
+    {
+      "index": 240,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 627260426
+    },
+    {
+      "index": 241,
+      "block": 10,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2305320
+    },
+    {
+      "index": 242,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1192074052
+    },
+    {
+      "index": 243,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1355575196
+    },
+    {
+      "index": 244,
+      "block": 10,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1414412394
+    },
+    {
+      "index": 245,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 264580305
+    },
+    {
+      "index": 246,
+      "block": 10,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1259939897
+    },
+    {
+      "index": 247,
+      "block": 10,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1515109083
+    },
+    {
+      "index": 248,
+      "block": 10,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1496164705
+    },
+    {
+      "index": 249,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 134810784
+    },
+    {
+      "index": 250,
+      "block": 10,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 851856297
+    },
+    {
+      "index": 251,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 471384025
+    },
+    {
+      "index": 252,
+      "block": 10,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 52619963
+    },
+    {
+      "index": 253,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 334690176
+    },
+    {
+      "index": 254,
+      "block": 10,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 18882189
+    },
+    {
+      "index": 255,
+      "block": 10,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 625690505
+    },
+    {
+      "index": 256,
+      "block": 10,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 868740299
+    },
+    {
+      "index": 257,
+      "block": 10,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1335103829
+    },
+    {
+      "index": 258,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 111284809
+    },
+    {
+      "index": 259,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 722524492
+    },
+    {
+      "index": 260,
+      "block": 10,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1716221375
+    },
+    {
+      "index": 261,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1778631296
+    },
+    {
+      "index": 262,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 481613852
+    },
+    {
+      "index": 263,
+      "block": 10,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1679585501
+    },
+    {
+      "index": 264,
+      "block": 11,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1572741991
+    },
+    {
+      "index": 265,
+      "block": 11,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 238379342
+    },
+    {
+      "index": 266,
+      "block": 11,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 502705958
+    },
+    {
+      "index": 267,
+      "block": 11,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 633688856
+    },
+    {
+      "index": 268,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 433268736
+    },
+    {
+      "index": 269,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 478267493
+    },
+    {
+      "index": 270,
+      "block": 11,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1789764280
+    },
+    {
+      "index": 271,
+      "block": 11,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1866870703
+    },
+    {
+      "index": 272,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 132097828
+    },
+    {
+      "index": 273,
+      "block": 11,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1049500017
+    },
+    {
+      "index": 274,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 347918101
+    },
+    {
+      "index": 275,
+      "block": 11,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1054005416
+    },
+    {
+      "index": 276,
+      "block": 11,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 296462537
+    },
+    {
+      "index": 277,
+      "block": 11,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 912401960
+    },
+    {
+      "index": 278,
+      "block": 11,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 641630632
+    },
+    {
+      "index": 279,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 323439655
+    },
+    {
+      "index": 280,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 687800573
+    },
+    {
+      "index": 281,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 219304906
+    },
+    {
+      "index": 282,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 656268404
+    },
+    {
+      "index": 283,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 449186738
+    },
+    {
+      "index": 284,
+      "block": 11,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1087773036
+    },
+    {
+      "index": 285,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 540992698
+    },
+    {
+      "index": 286,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1626463109
+    },
+    {
+      "index": 287,
+      "block": 11,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 116967934
+    },
+    {
+      "index": 288,
+      "block": 12,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1043085314
+    },
+    {
+      "index": 289,
+      "block": 12,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 6156389
+    },
+    {
+      "index": 290,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 151462170
+    },
+    {
+      "index": 291,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1596519349
+    },
+    {
+      "index": 292,
+      "block": 12,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 681283568
+    },
+    {
+      "index": 293,
+      "block": 12,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 57333819
+    },
+    {
+      "index": 294,
+      "block": 12,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 459242959
+    },
+    {
+      "index": 295,
+      "block": 12,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1462333031
+    },
+    {
+      "index": 296,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 861192582
+    },
+    {
+      "index": 297,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 162848160
+    },
+    {
+      "index": 298,
+      "block": 12,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1208732291
+    },
+    {
+      "index": 299,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 939923264
+    },
+    {
+      "index": 300,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 136835057
+    },
+    {
+      "index": 301,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1160626259
+    },
+    {
+      "index": 302,
+      "block": 12,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1204996819
+    },
+    {
+      "index": 303,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 224718222
+    },
+    {
+      "index": 304,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 901112702
+    },
+    {
+      "index": 305,
+      "block": 12,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 726041698
+    },
+    {
+      "index": 306,
+      "block": 12,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1597562792
+    },
+    {
+      "index": 307,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1936910016
+    },
+    {
+      "index": 308,
+      "block": 12,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2027936296
+    },
+    {
+      "index": 309,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 293950227
+    },
+    {
+      "index": 310,
+      "block": 12,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1855791262
+    },
+    {
+      "index": 311,
+      "block": 12,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1256117474
+    },
+    {
+      "index": 312,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1980783114
+    },
+    {
+      "index": 313,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 277277583
+    },
+    {
+      "index": 314,
+      "block": 13,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1483710487
+    },
+    {
+      "index": 315,
+      "block": 13,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1289911934
+    },
+    {
+      "index": 316,
+      "block": 13,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1558166927
+    },
+    {
+      "index": 317,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 548021745
+    },
+    {
+      "index": 318,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1227956666
+    },
+    {
+      "index": 319,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 282951386
+    },
+    {
+      "index": 320,
+      "block": 13,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 141269801
+    },
+    {
+      "index": 321,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1880727141
+    },
+    {
+      "index": 322,
+      "block": 13,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 560646862
+    },
+    {
+      "index": 323,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 357169923
+    },
+    {
+      "index": 324,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 664248814
+    },
+    {
+      "index": 325,
+      "block": 13,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1082015334
+    },
+    {
+      "index": 326,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 793041016
+    },
+    {
+      "index": 327,
+      "block": 13,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2046007426
+    },
+    {
+      "index": 328,
+      "block": 13,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1396990413
+    },
+    {
+      "index": 329,
+      "block": 13,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 453995294
+    },
+    {
+      "index": 330,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1538184881
+    },
+    {
+      "index": 331,
+      "block": 13,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1546837991
+    },
+    {
+      "index": 332,
+      "block": 13,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1610670192
+    },
+    {
+      "index": 333,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 289003313
+    },
+    {
+      "index": 334,
+      "block": 13,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 435862985
+    },
+    {
+      "index": 335,
+      "block": 13,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2066283090
+    },
+    {
+      "index": 336,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1130454527
+    },
+    {
+      "index": 337,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1240210294
+    },
+    {
+      "index": 338,
+      "block": 14,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1402995339
+    },
+    {
+      "index": 339,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1600881138
+    },
+    {
+      "index": 340,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1019728058
+    },
+    {
+      "index": 341,
+      "block": 14,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2091303387
+    },
+    {
+      "index": 342,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1588115046
+    },
+    {
+      "index": 343,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1427585100
+    },
+    {
+      "index": 344,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 49381348
+    },
+    {
+      "index": 345,
+      "block": 14,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2055008276
+    },
+    {
+      "index": 346,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 705183352
+    },
+    {
+      "index": 347,
+      "block": 14,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1281629911
+    },
+    {
+      "index": 348,
+      "block": 14,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 372602553
+    },
+    {
+      "index": 349,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 351801679
+    },
+    {
+      "index": 350,
+      "block": 14,
+      "arm": "standard",
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1449767422
+    },
+    {
+      "index": 351,
+      "block": 14,
+      "arm": "otherowner",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1794278752
+    },
+    {
+      "index": 352,
+      "block": 14,
+      "arm": "norule",
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 249669777
+    },
+    {
+      "index": 353,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2073233062
+    },
+    {
+      "index": 354,
+      "block": 14,
+      "arm": "standard",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2136104388
+    },
+    {
+      "index": 355,
+      "block": 14,
+      "arm": "otherowner",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 4842760
+    },
+    {
+      "index": 356,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2022050477
+    },
+    {
+      "index": 357,
+      "block": 14,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 672490702
+    },
+    {
+      "index": 358,
+      "block": 14,
+      "arm": "norule",
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 89804746
+    },
+    {
+      "index": 359,
+      "block": 14,
+      "arm": "thirdparty",
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 423486310
+    }
+  ],
+  "automatic_retries": 0
+}

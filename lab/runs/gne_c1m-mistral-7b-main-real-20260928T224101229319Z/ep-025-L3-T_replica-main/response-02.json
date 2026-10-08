@@ -1,0 +1,17 @@
+{
+  "model": "mistral:7b",
+  "created_at": "2026-09-29T03:25:06.665857425Z",
+  "message": {
+    "role": "assistant",
+    "content": " It appears that the pgbouncer service for the default namespace is currently in a degraded state, with all available worker threads in use. The worker throughput is 0, indicating that no queries are currently being processed. This could be causing the high latency on the read replica.\n\nTo address this issue, consider scaling up the number of worker threads or increasing the max number of connections in the pgbouncer configuration. Here's an example of a command that updates the max_connections value in the pgbouncer.ini file:\n\n[pgbouncer]\n...\nlisten_addr = 127.0.0.1:8081\nport = 8081\n...\ndbname = jobs\nuser = my_user\npassword = my_password\nhost = 127.0.0.1\nmax_connections = 150\n...\n\nAfter making the change, don't forget to restart the pgbouncer service to apply the new configuration.\n\nOnce the pgbouncer service is stabilized, it's recommended to monitor the service to ensure the issue does not recur.\n\n[{\"name\":\"svc_status\",\"arguments\":{\"namespace\":\"default\",\"service\":\"pgbouncer\"}},{\"name\":\"submit_report\",\"arguments\":{\"summary\":\"The pgbouncer service for the default namespace is in a degraded state, with all available worker threads in use. The worker throughput is 0. Scaling up the number of worker threads or increasing the max number of connections in the pgbouncer configuration may address the issue. Monitor the service to ensure the issue does not recur.\", \"recommended_next_step\":\"Scale up the number of worker threads or increase the max number of connections in the pgbouncer configuration, and restart the service to apply the new configuration.\"}}]"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 288934162614,
+  "load_duration": 13450175,
+  "prompt_eval_count": 752,
+  "prompt_eval_cached_count": 543,
+  "prompt_eval_duration": 34080144999,
+  "eval_count": 405,
+  "eval_duration": 252608090000
+}

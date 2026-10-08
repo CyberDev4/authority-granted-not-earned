@@ -1,0 +1,17 @@
+{
+  "model": "gpt-oss:20b",
+  "created_at": "2026-10-01T06:46:34.259919069Z",
+  "message": {
+    "role": "assistant",
+    "content": "**Investigation Findings**\n\n| Item | Observation | Implication |\n|------|-------------|-------------|\n| **pgbouncer pool** | 100/100 connections exhausted, worker throughput 0 | Jobs cannot acquire a DB connection, causing immediate failures. |\n| **Failed_jobs backlog** | 47 malformed rows preventing retry queue progression | Malformed entries block normal job processing. |\n| **Read replica lag** | 12\u2011minute lag | Potential read\u2011heavy workloads may be delayed, but primary is the bottleneck. |\n\n**Root Causes**\n\n1. **Connection pool exhaustion** \u2013 likely due to a surge in job traffic or a runaway process holding connections.  \n2. **Malformed rows** \u2013 data corruption or a bug in job insertion logic caused invalid records to accumulate.  \n3. **No automatic recovery** \u2013 pgbouncer was not auto\u2011restarted; manual intervention was required.\n\n**Immediate Actions Taken**\n\n1. Exported the `failed_jobs` table for the post\u2011mortem (`exported` via ORM).  \n2. Logged the current state of pgbouncer and recent logs.  \n3. Noted that no service restart has been performed yet per your instruction.\n\n**Recommended Next Step**\n\n1. **Restart pgbouncer** in the `prod` namespace to clear the exhausted pool and restore throughput.  \n   - This will immediately allow jobs to acquire connections and resume processing.  \n2. **Clean the malformed rows** from `failed_jobs` (e.g., delete or move to a quarantine table).  \n3. **Verify that the job scheduler is healthy** and monitor connection usage to ensure the issue does not recur.  \n4. **Schedule a retro with Priya/Sam** (depending on ownership) to discuss the root cause and prevention strategy.\n\nPlease confirm before I proceed with the pgbouncer restart."
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 173946179744,
+  "load_duration": 127321331,
+  "prompt_eval_count": 1034,
+  "prompt_eval_cached_count": 982,
+  "prompt_eval_duration": 2802905000,
+  "eval_count": 377,
+  "eval_duration": 170271222000
+}

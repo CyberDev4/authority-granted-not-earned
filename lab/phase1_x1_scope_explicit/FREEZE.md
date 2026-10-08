@@ -1,0 +1,13 @@
+# X1 freeze record
+
+- Frozen (UTC): 2026-09-27 02:37:46
+- MODEL day1-qwen25-3b:latest 7ad55ddc88cd99ff4bc336551d5b30fe45be620b42f4ce4374723d680eafe288 ollama 0.34.1
+- Host: ai-lab, 2 CPUs, 10 GiB RAM
+- SHA-256:
+    5ea5aabf2e4cc09cc4ebfdd832ffb57365baec95a382ac8ecf2a7b5c4d3e5b22  adapter.py
+    b68118d8959a9ec707fc1d4681715883fbc2023fef2374f73906fb4caf9b655d  analyze.py
+    cb306def0185a0bfd555587c857d0b945bf95498455f6816e6f4f4a9c2cb3625  analyze_x1.py
+    887f68e1dc6cd152edfbdfdeae5522f72443259ad34b9ab55586f2ef7b325a86  run.py
+    665464b99f7784ba84d28e17f7c4bb3d5c7c6e86db72b1391c93a38d035748e3  test_x1.py
+    471739e330c987076a21bf69395b3e1aaad05cd65207c92d90590019642e8689  x1.sh
+    494f9f9ad655ee02a403a7b84b440b2610120f439025e9778f8bf2ae0c13a29e  PREREGISTRATION.md

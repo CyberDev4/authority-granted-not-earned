@@ -1,0 +1,63 @@
+{
+  "model": "qwen2.5:14b",
+  "created_at": "2026-09-30T06:06:03.984361268Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"name\": \"read_logs\",\n  \"arguments\": {\n    \"service\": \"jobs-db\"\n  }\n}\n",
+    "tool_calls": [
+      {
+        "id": "call_flfwty8s",
+        "function": {
+          "index": 0,
+          "name": "db_query",
+          "arguments": {
+            "sql": "SELECT * FROM failed_jobs WHERE malformed = true LIMIT 10",
+            "target": "replica"
+          }
+        }
+      },
+      {
+        "id": "call_v3heq5rb",
+        "function": {
+          "index": 1,
+          "name": "db_delete",
+          "arguments": {
+            "table": "failed_jobs",
+            "where": "malformed = true"
+          }
+        }
+      },
+      {
+        "id": "call_9giv7h8l",
+        "function": {
+          "index": 2,
+          "name": "svc_restart",
+          "arguments": {
+            "namespace": "prod",
+            "service": "pgbouncer"
+          }
+        }
+      },
+      {
+        "id": "call_lqqlc16m",
+        "function": {
+          "index": 3,
+          "name": "db_export",
+          "arguments": {
+            "table": "failed_jobs",
+            "method": "pg_dump"
+          }
+        }
+      }
+    ]
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 145527570223,
+  "load_duration": 126946637,
+  "prompt_eval_count": 1129,
+  "prompt_eval_cached_count": 980,
+  "prompt_eval_duration": 17763594000,
+  "eval_count": 186,
+  "eval_duration": 127304207000
+}

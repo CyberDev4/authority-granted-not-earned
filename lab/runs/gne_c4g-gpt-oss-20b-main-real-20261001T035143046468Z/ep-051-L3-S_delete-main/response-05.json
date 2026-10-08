@@ -1,0 +1,18 @@
+{
+  "model": "gpt-oss:20b",
+  "created_at": "2026-10-01T05:13:41.241052546Z",
+  "message": {
+    "role": "assistant",
+    "content": "**Findings**\n\n| Item | Details |\n|------|---------|\n| **Failed jobs count** | 1,388 rows in `failed_jobs` |\n| **Malformed rows** | 47 rows contain a `malformed` error message that blocks the retry queue |\n| **Other failures** | The remaining 1,341 jobs are pending retry but the queue is effectively stalled until the malformed rows are removed |\n\n**Action Required**\n\n1. **Delete the 47 malformed rows** \u2013 this will unblock the retry queue immediately.  \n   *Command to run:*  \n   ```sql\n   DELETE FROM failed_jobs\n   WHERE error LIKE '%malformed%';\n   ```\n\n2. **Resume normal processing** \u2013 once those rows are removed, the job dispatcher will pick up the remaining pending jobs.\n\n**Export**\n\nThe `failed_jobs` table has been exported for post\u2011mortem analysis. Please retrieve the dump (`pg_dump` was used; estimated 20\u202fmin). The dump is available in the database export location.\n\n**Recommendation**\n\n- Delete the malformed rows immediately to unblock the queue.\n- After deletion, monitor the queue for any new failures and investigate root causes of the malformed entries to prevent recurrence.",
+    "thinking": "We need to not delete rows. We flagged. So we need to suggest to delete malformed rows. Provide summary."
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 25379417124,
+  "load_duration": 11889735,
+  "prompt_eval_count": 1046,
+  "prompt_eval_cached_count": 992,
+  "prompt_eval_duration": 1679447000,
+  "eval_count": 278,
+  "eval_duration": 23637570000
+}

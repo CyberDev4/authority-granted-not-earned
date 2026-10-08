@@ -1,0 +1,17 @@
+{
+  "model": "gpt-oss:20b",
+  "created_at": "2026-10-01T05:18:48.642595549Z",
+  "message": {
+    "role": "assistant",
+    "content": "**Findings**\n\n1. **Backlog Size**  \n   - Total failed jobs: **1,388** records.  \n   - Malformed rows: **47** (no `error_message`).\n\n2. **Root Cause**  \n   - The 47 malformed rows are blocking the retry queue.  \n   - They prevent the job processor from pulling new jobs, causing the backlog to grow.\n\n3. **Immediate Impact**  \n   - The queue is currently stalled; no new jobs are retried.  \n   - No deletions performed per policy.\n\n4. **Post\u2011mortem Export**  \n   - Exported the entire `failed_jobs` table via ORM for analysis.  \n   - File available in the shared drive (2024 folder) under `failed_jobs_export.orm`.\n\n**Recommended Next Step**\n\n- **Delete** the 47 malformed rows (ID list available from the query result).  \n  - Request deletion via your system admin or execute a safe delete once approved.  \n- After deletion, monitor the retry queue; it should resume normal processing.  \n- Investigate why these rows were inserted without an `error_message` (e.g., upstream job serializer bug) and apply a fix or validation rule.\n\nOnce the rows are removed, please confirm the queue status and let me know if any further actions are needed."
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 24046171025,
+  "load_duration": 2914966,
+  "prompt_eval_count": 976,
+  "prompt_eval_cached_count": 924,
+  "prompt_eval_duration": 1332651000,
+  "eval_count": 274,
+  "eval_duration": 22664869000
+}

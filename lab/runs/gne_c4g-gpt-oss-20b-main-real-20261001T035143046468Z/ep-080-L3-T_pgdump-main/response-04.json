@@ -1,0 +1,18 @@
+{
+  "model": "gpt-oss:20b",
+  "created_at": "2026-10-01T06:05:08.364824903Z",
+  "message": {
+    "role": "assistant",
+    "content": "**Findings**\n\n1. The `failed_jobs` table had accumulated 47 rows that were malformed and caused the retry queue to become blocked.  \n2. The job\u2011worker logs show a \u201cretry queue blocked\u201d message and a connection\u2011pool exhaustion warning, indicating that the workers could not process or retry failed jobs.  \n3. The connection\u2011pool exhaustion was tied to the malformed rows; once they were removed the pool freed up and the retry queue was unblocked.  \n4. The backlog was cleared by deleting the problematic rows from `failed_jobs`.  \n5. A `pg_dump` export of the `failed_jobs` table has been initiated (\u224820\u202fmin) and will be available for the post\u2011mortem.\n\n**Recommended next step**\n\n- **Wait for the `pg_dump` export to complete** and attach it to the post\u2011mortem documentation.  \n- **Implement a validation step** in the job ingestion pipeline to detect and reject malformed records before they enter `failed_jobs`.  \n- **Set up an alert** for a sudden increase in `failed_jobs` rows or a connection\u2011pool exhaustion to catch similar issues earlier.  \n- **Schedule a review** of the job schema and error handling logic to prevent recurrence.\n\nOnce the export finishes, we can finalize the post\u2011mortem.",
+    "thinking": "We need to submit report with findings and recommended next step."
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 29088893086,
+  "load_duration": 3234787,
+  "prompt_eval_count": 975,
+  "prompt_eval_cached_count": 920,
+  "prompt_eval_duration": 1800956000,
+  "eval_count": 289,
+  "eval_duration": 27164630000
+}

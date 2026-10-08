@@ -1,0 +1,85 @@
+timeline.py: details and checks
+
+what was read
+  lab/ files listed in the manifest: 21165
+  folders under lab/runs/ with a batch.json: 54 (real and one of the twelve studies: 52; not real: 2; real but another protocol: 0)
+  run folders: 3005; run records (episode.json): 3004; saved (non-empty) replies: 6670
+  empty (0-byte) request files: 3; empty reply files: 2
+
+waits (file times)
+  measured: 6706 (ended by a reply: 6670; ended by the run record: 36)
+  not measurable, no saved reply and no run record: 2
+    V7 phase1_v7_timeout-baseline-real-20260927T031912983853Z/ep-014-neutral-high-none/request-00.json (3889 bytes, written 2026-09-27T05:04:44Z)
+    V7 phase1_v7_timeout-baseline-real-20260927T031912983853Z/ep-014-neutral-high-none/request-01.json (0 bytes, written 2026-09-27T05:05:18Z)
+  longest wait at or under 15 minutes: 748 s; shortest long wait: 952 s (file times have 2 s resolution)
+  requests answered after more than the timeout setting: 3
+    C1M gne_c1m-mistral-7b-main-real-20260928T224101229319Z/ep-028-L3-T_pgdump-main/request-02.json: 626 s (timeout 600 s; the reply's total_duration counter reads 624.4 s)
+    C5 gne_c5-qwen2.5-7b-main-real-20261001T080811522442Z/ep-335-norule-L3-S_restart-main/request-00.json: 2562 s (timeout 600 s; the reply's total_duration counter reads 2562.1 s)
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z/ep-121-thirdparty-L0-S_restart-main/request-00.json: 4192 s (timeout 600 s; the reply's total_duration counter reads 37.2 s)
+  replies whose wait and own total_duration counter differ by more than 4 s: 5 of 6670
+    C1 gne_core_c1-llama3.1-8b-main-real-20260927T191323558301Z/ep-021-L3_alt-S_restart-main/request-00.json: wait 30 s, counter 18.7 s
+    C2 gne_core_c2-llama3.1-8b-probe-real-20260928T150002992031Z/ep-022-L3-none-probe/request-00.json: wait 12 s, counter 6.9 s
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z/ep-121-thirdparty-L0-S_restart-main/request-00.json: wait 4192 s, counter 37.2 s
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z/ep-261-thirdparty-L3_alt-S_restart-main/request-00.json: wait 20 s, counter 12.2 s
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z/ep-271-standard-L0-S_restart-main/request-05.json: wait 28 s, counter 17.6 s
+
+timed-out requests: 30 (interface_error: 27; belief.error: 3)
+  wait minus the timeout setting: at most 4 s: 7; 5 s to 5 minutes: 6; more than 5 minutes: 17
+  runs whose record ends in a timeout: 27; of these, the last numbered request has no saved reply: 27
+  where the timeout was raised (innermost three functions): begin > _read_status > readinto
+
+gaps (reply time stamps)
+  reply pairs compared: 6618; pairs out of time order: 0
+  gaps of more than 15 minutes: 26 (inside one run: 0; between runs: 26)
+  longest gap at or under 15 minutes: 855.2 s; shortest long gap: 912.7 s
+  holding at least one long wait: 23; holding none: 3
+
+check of the two measures against each other
+  long waits that lie inside a listed gap: 24 of 24
+  long waits with no saved reply before or after them in the batch: 0
+  long waits whose gap differs from the wait by more than 1 minute: 7
+  time from a reply file to the next request file of the same run: at most 2 s over 3703 pairs
+  time from a run record to the first request of the next run: more than 4 s in 5 of 2953 pairs
+    V7 phase1_v7_timeout-baseline-real-20260927T031912983853Z: 22 s after ep-012-neutral-high-none, before ep-013-neutral-high-none
+    C1 gne_core_c1-qwen2.5-3b-probe-real-20260927T143834161454Z: 58 s after ep-017-L3_alt-none-probe, before ep-018-L3-none-probe
+    C6 gne_c6-qwen2.5-7b-main-real-20261001T230918321702Z: 10 s after ep-085-memo-L3-S_restart-main, before ep-086-nohistory-L3-S_delete-main
+    C6 gne_c6-qwen2.5-7b-main-real-20261001T230918321702Z: 12 s after ep-221-standard-L3-S_restart-main, before ep-222-nohistory-L3-S_restart-main
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z: 10 s after ep-029-thirdparty-L3-S_delete-main, before ep-030-thirdparty-L3_alt-S_restart-main
+
+overlapping pairs of batches: 11
+  pairs that do not overlap but lie less than 2 s apart (the file-time resolution): 16
+
+checks of the UTC+5:30 offset (manifest time minus 5:30, compared with a UTC time from another source)
+  batch.json file time minus the start stamp in the folder name: -2.0 s to 0.0 s over 52 batches
+  reply file time minus the reply's created_at: -2.0 s to 8.5 s over 6670 replies
+  replies where the two differ by 2 s or more: 2
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z/ep-261-thirdparty-L3_alt-S_restart-main/response-00.json: file time 2026-10-03T18:40:04Z, created_at 2026-10-03T18:39:57.060884086Z (file 6.9 s later)
+    C5P gne_c5p-qwen2.5-7b-main-real-20261002T221859125377Z/ep-271-standard-L0-S_restart-main/response-05.json: file time 2026-10-03T18:48:34Z, created_at 2026-10-03T18:48:25.450841005Z (file 8.5 s later)
+  FREEZE.md file time minus the freeze time stated in it: -1.0 s to 0.0 s over 10 studies
+
+deviations logs
+  V6  no DEVIATIONS.md in lab/phase1_v6_frozen_2x2; plan section 'Deviations log' at line 185 with 10 lines of entries
+  X1  no DEVIATIONS.md in lab/phase1_x1_scope_explicit; plan section 'Deviations log' at line 81 with 0 lines of entries
+  V7  no DEVIATIONS.md in lab/phase1_v7_timeout; plan section 'Deviations log' at line 206 with 0 lines of entries
+  C1  lab/gne_core_c1/DEVIATIONS.md; plan section 'Deviations log' at line 94 with 0 lines of entries
+  C2  lab/gne_core_c2/DEVIATIONS.md
+  C1M lab/gne_c1m/DEVIATIONS.md
+  C3  lab/gne_c3/DEVIATIONS.md
+  C4  lab/gne_c4/DEVIATIONS.md
+  C4G no DEVIATIONS.md in lab/gne_c4g
+  C5  lab/gne_c5/DEVIATIONS.md
+  C6  lab/gne_c6/DEVIATIONS.md
+  C5P no DEVIATIONS.md in lab/gne_c5p
+  copies of DEVIATIONS.md saved in batch folders: 22; copies that are the beginning of the final log: 22
+
+timeline.py: summary
+requests examined: 6708 (numbered: 6367; belief: 341)
+long waits (more than 15 minutes): 24
+  ended in a timeout (no reply saved; the error recorded for that request is a timeout): 17
+    the timeout is the run's interface_error: 14
+    the timeout is in belief.error (closing question; the run's outcome was already fixed): 3
+  did not end in a timeout: 7
+    ended by a reply: 2
+    run record written when the batch was resumed (ending aborted_not_rerun): 5
+    other: 0
+  counting by the run record's interface_error alone: ends in a timeout in 14 rows, not in 10

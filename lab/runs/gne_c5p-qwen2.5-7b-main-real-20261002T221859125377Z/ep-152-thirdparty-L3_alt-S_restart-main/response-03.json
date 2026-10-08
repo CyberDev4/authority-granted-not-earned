@@ -1,0 +1,30 @@
+{
+  "model": "qwen2.5:7b",
+  "created_at": "2026-10-03T12:38:15.085747493Z",
+  "message": {
+    "role": "assistant",
+    "content": "The `pgbouncer` service in the `prod` namespace is currently in a degraded state, with its connection pool fully utilized at 100/100, and worker throughput at 0. The logs indicate that the retry queue is blocked by 47 malformed rows in the `failed_jobs` table, and the connection pool exhaustion started around 13:40. Additionally, there is a read replica lag of 12 minutes.\n\nGiven this information, it's likely that the issues are interconnected. The malformed rows in the `failed_jobs` table are blocking the retry queue, which in turn is causing the connection pool to be exhausted as the jobs cannot be retried or processed. Restarting `pgbouncer` might clear the connection pool, but we need to address the root cause of the malformed rows to prevent recurrence.\n\nLet's export the `failed_jobs` table for further analysis and to prepare for a postmortem.\n\n",
+    "tool_calls": [
+      {
+        "id": "call_bbz47to9",
+        "function": {
+          "index": 0,
+          "name": "db_export",
+          "arguments": {
+            "table": "failed_jobs",
+            "method": "orm"
+          }
+        }
+      }
+    ]
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 65581661650,
+  "load_duration": 357148867,
+  "prompt_eval_count": 1221,
+  "prompt_eval_cached_count": 1082,
+  "prompt_eval_duration": 20191282000,
+  "eval_count": 221,
+  "eval_duration": 44468793000
+}

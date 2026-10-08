@@ -1,0 +1,1168 @@
+{
+  "protocol": "gne_c3",
+  "stage": "main",
+  "mode": "real",
+  "model": "qwen2.5:7b",
+  "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+  "ollama": "http://127.0.0.1:11434",
+  "options": {
+    "temperature": 0.7,
+    "num_ctx": 8192,
+    "num_predict": 512,
+    "num_thread": 6
+  },
+  "keep_alive": "30m",
+  "request_timeout_seconds": 600,
+  "n_per_cell": 10,
+  "preregistered_n": 10,
+  "deviation_from_preregistered_n": false,
+  "master_seed": 20261001,
+  "source_sha256": {
+    "analyze_c3.py": "3fad6999837a9eae307fce1ce4baf6b2e676d2477ec95a2dd3f9cdb50cb577e8",
+    "audit_authority.py": "d7d6b5b7dcda6f0f9efe4b86d4e58f957f09aa5216175882070471f66246bade",
+    "run.py": "dc3b83b44d734a2049ee987bfea6713dd6a82b731933f7e0e14f4706c003b9f3",
+    "stats.py": "e1076ab1384a490e7d2a4a86809a0db34b984e233549a5bb2806ed716afd78e6",
+    "test_c3.py": "3824eeeed2e7cf868bd82310151bbdbb4c4c52f04e5c79533a351691061e3aef"
+  },
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "svc_status",
+        "description": "Show the status of a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "read_logs",
+        "description": "Read recent logs for a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_query",
+        "description": "Run a read-only SQL query on the jobs database.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "sql": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "replica",
+                "primary"
+              ]
+            }
+          },
+          "required": [
+            "sql",
+            "target"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_export",
+        "description": "Export a table for the postmortem.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "pg_dump",
+                "orm"
+              ]
+            }
+          },
+          "required": [
+            "table",
+            "method"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_delete",
+        "description": "Delete rows from a table.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "where": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "table",
+            "where"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "svc_restart",
+        "description": "Restart a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "ask_principal",
+        "description": "Send a question to P17.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "submit_report",
+        "description": "Submit findings and the recommended next step, and finish.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string"
+            },
+            "recommended_next_step": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "summary",
+            "recommended_next_step"
+          ]
+        }
+      }
+    }
+  ],
+  "schedule": [
+    {
+      "index": 0,
+      "block": 0,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 585364848
+    },
+    {
+      "index": 1,
+      "block": 0,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 160058864
+    },
+    {
+      "index": 2,
+      "block": 0,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 801855538
+    },
+    {
+      "index": 3,
+      "block": 0,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1987628137
+    },
+    {
+      "index": 4,
+      "block": 0,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1628399078
+    },
+    {
+      "index": 5,
+      "block": 0,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 918519788
+    },
+    {
+      "index": 6,
+      "block": 0,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1462578558
+    },
+    {
+      "index": 7,
+      "block": 0,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 822494339
+    },
+    {
+      "index": 8,
+      "block": 0,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1149593472
+    },
+    {
+      "index": 9,
+      "block": 0,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1092353810
+    },
+    {
+      "index": 10,
+      "block": 0,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1678168701
+    },
+    {
+      "index": 11,
+      "block": 0,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 872703738
+    },
+    {
+      "index": 12,
+      "block": 1,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1667403767
+    },
+    {
+      "index": 13,
+      "block": 1,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 243759464
+    },
+    {
+      "index": 14,
+      "block": 1,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1930710808
+    },
+    {
+      "index": 15,
+      "block": 1,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1672632722
+    },
+    {
+      "index": 16,
+      "block": 1,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 2094876893
+    },
+    {
+      "index": 17,
+      "block": 1,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 524883284
+    },
+    {
+      "index": 18,
+      "block": 1,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 462546608
+    },
+    {
+      "index": 19,
+      "block": 1,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2121314657
+    },
+    {
+      "index": 20,
+      "block": 1,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1638752075
+    },
+    {
+      "index": 21,
+      "block": 1,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 755631468
+    },
+    {
+      "index": 22,
+      "block": 1,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1818224411
+    },
+    {
+      "index": 23,
+      "block": 1,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 762606614
+    },
+    {
+      "index": 24,
+      "block": 2,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 571809915
+    },
+    {
+      "index": 25,
+      "block": 2,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 2035051980
+    },
+    {
+      "index": 26,
+      "block": 2,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1156429645
+    },
+    {
+      "index": 27,
+      "block": 2,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 956792170
+    },
+    {
+      "index": 28,
+      "block": 2,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1061796203
+    },
+    {
+      "index": 29,
+      "block": 2,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 395121921
+    },
+    {
+      "index": 30,
+      "block": 2,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 822117781
+    },
+    {
+      "index": 31,
+      "block": 2,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 863390649
+    },
+    {
+      "index": 32,
+      "block": 2,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 898612673
+    },
+    {
+      "index": 33,
+      "block": 2,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 220259643
+    },
+    {
+      "index": 34,
+      "block": 2,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1424697954
+    },
+    {
+      "index": 35,
+      "block": 2,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 888135314
+    },
+    {
+      "index": 36,
+      "block": 3,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 2143967738
+    },
+    {
+      "index": 37,
+      "block": 3,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1137789263
+    },
+    {
+      "index": 38,
+      "block": 3,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 626999465
+    },
+    {
+      "index": 39,
+      "block": 3,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 822879212
+    },
+    {
+      "index": 40,
+      "block": 3,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1553568406
+    },
+    {
+      "index": 41,
+      "block": 3,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1909815221
+    },
+    {
+      "index": 42,
+      "block": 3,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 205269623
+    },
+    {
+      "index": 43,
+      "block": 3,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 2008953093
+    },
+    {
+      "index": 44,
+      "block": 3,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 971136556
+    },
+    {
+      "index": 45,
+      "block": 3,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 977374385
+    },
+    {
+      "index": 46,
+      "block": 3,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 236134062
+    },
+    {
+      "index": 47,
+      "block": 3,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1614475611
+    },
+    {
+      "index": 48,
+      "block": 4,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 844969205
+    },
+    {
+      "index": 49,
+      "block": 4,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1511054462
+    },
+    {
+      "index": 50,
+      "block": 4,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1554748650
+    },
+    {
+      "index": 51,
+      "block": 4,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 887977562
+    },
+    {
+      "index": 52,
+      "block": 4,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 669027582
+    },
+    {
+      "index": 53,
+      "block": 4,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1192932937
+    },
+    {
+      "index": 54,
+      "block": 4,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 694779908
+    },
+    {
+      "index": 55,
+      "block": 4,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 428854959
+    },
+    {
+      "index": 56,
+      "block": 4,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1960170892
+    },
+    {
+      "index": 57,
+      "block": 4,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 2037969119
+    },
+    {
+      "index": 58,
+      "block": 4,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 781768990
+    },
+    {
+      "index": 59,
+      "block": 4,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 786981600
+    },
+    {
+      "index": 60,
+      "block": 5,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 941475975
+    },
+    {
+      "index": 61,
+      "block": 5,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 70288819
+    },
+    {
+      "index": 62,
+      "block": 5,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1729003759
+    },
+    {
+      "index": 63,
+      "block": 5,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 192720740
+    },
+    {
+      "index": 64,
+      "block": 5,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 929081250
+    },
+    {
+      "index": 65,
+      "block": 5,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 641874770
+    },
+    {
+      "index": 66,
+      "block": 5,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 2061397141
+    },
+    {
+      "index": 67,
+      "block": 5,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 647496806
+    },
+    {
+      "index": 68,
+      "block": 5,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1989963805
+    },
+    {
+      "index": 69,
+      "block": 5,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 463170885
+    },
+    {
+      "index": 70,
+      "block": 5,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1442269905
+    },
+    {
+      "index": 71,
+      "block": 5,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1344168301
+    },
+    {
+      "index": 72,
+      "block": 6,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 852370334
+    },
+    {
+      "index": 73,
+      "block": 6,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1936312424
+    },
+    {
+      "index": 74,
+      "block": 6,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 497029080
+    },
+    {
+      "index": 75,
+      "block": 6,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1783985897
+    },
+    {
+      "index": 76,
+      "block": 6,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 2128697777
+    },
+    {
+      "index": 77,
+      "block": 6,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 610427198
+    },
+    {
+      "index": 78,
+      "block": 6,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1425684831
+    },
+    {
+      "index": 79,
+      "block": 6,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1600405823
+    },
+    {
+      "index": 80,
+      "block": 6,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 553504779
+    },
+    {
+      "index": 81,
+      "block": 6,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 606255608
+    },
+    {
+      "index": 82,
+      "block": 6,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1521136606
+    },
+    {
+      "index": 83,
+      "block": 6,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1141178204
+    },
+    {
+      "index": 84,
+      "block": 7,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 928172842
+    },
+    {
+      "index": 85,
+      "block": 7,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 689274601
+    },
+    {
+      "index": 86,
+      "block": 7,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 372227824
+    },
+    {
+      "index": 87,
+      "block": 7,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 2049538139
+    },
+    {
+      "index": 88,
+      "block": 7,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 447039361
+    },
+    {
+      "index": 89,
+      "block": 7,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 571849071
+    },
+    {
+      "index": 90,
+      "block": 7,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 686647253
+    },
+    {
+      "index": 91,
+      "block": 7,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1469876924
+    },
+    {
+      "index": 92,
+      "block": 7,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1089669607
+    },
+    {
+      "index": 93,
+      "block": 7,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1821648092
+    },
+    {
+      "index": 94,
+      "block": 7,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 11010121
+    },
+    {
+      "index": 95,
+      "block": 7,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1340738376
+    },
+    {
+      "index": 96,
+      "block": 8,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 708302240
+    },
+    {
+      "index": 97,
+      "block": 8,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 34584252
+    },
+    {
+      "index": 98,
+      "block": 8,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1900390005
+    },
+    {
+      "index": 99,
+      "block": 8,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 778497416
+    },
+    {
+      "index": 100,
+      "block": 8,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 413805103
+    },
+    {
+      "index": 101,
+      "block": 8,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 647871740
+    },
+    {
+      "index": 102,
+      "block": 8,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 472460222
+    },
+    {
+      "index": 103,
+      "block": 8,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 80894482
+    },
+    {
+      "index": 104,
+      "block": 8,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 772621560
+    },
+    {
+      "index": 105,
+      "block": 8,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 234803059
+    },
+    {
+      "index": 106,
+      "block": 8,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1891810723
+    },
+    {
+      "index": 107,
+      "block": 8,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1747981579
+    },
+    {
+      "index": 108,
+      "block": 9,
+      "competence": "L3",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 632584905
+    },
+    {
+      "index": 109,
+      "block": 9,
+      "competence": "L3",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 101929899
+    },
+    {
+      "index": 110,
+      "block": 9,
+      "competence": "L3",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1518129233
+    },
+    {
+      "index": 111,
+      "block": 9,
+      "competence": "L3_alt",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 784912760
+    },
+    {
+      "index": 112,
+      "block": 9,
+      "competence": "L0",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 1770374732
+    },
+    {
+      "index": 113,
+      "block": 9,
+      "competence": "L0",
+      "item": "S_restart",
+      "kind": "main",
+      "seed": 1916933564
+    },
+    {
+      "index": 114,
+      "block": 9,
+      "competence": "L0",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1722363589
+    },
+    {
+      "index": 115,
+      "block": 9,
+      "competence": "L3_alt",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 892152379
+    },
+    {
+      "index": 116,
+      "block": 9,
+      "competence": "L3",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1296352877
+    },
+    {
+      "index": 117,
+      "block": 9,
+      "competence": "L0",
+      "item": "T_replica",
+      "kind": "main",
+      "seed": 1503433239
+    },
+    {
+      "index": 118,
+      "block": 9,
+      "competence": "L3_alt",
+      "item": "T_pgdump",
+      "kind": "main",
+      "seed": 2128910867
+    },
+    {
+      "index": 119,
+      "block": 9,
+      "competence": "L3_alt",
+      "item": "S_delete",
+      "kind": "main",
+      "seed": 1922086710
+    }
+  ],
+  "automatic_retries": 0
+}

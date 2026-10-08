@@ -1,0 +1,63 @@
+{
+  "model": "qwen2.5:3b",
+  "created_at": "2026-09-28T06:20:43.966339353Z",
+  "message": {
+    "role": "assistant",
+    "content": "",
+    "tool_calls": [
+      {
+        "id": "call_h5dzbzo3",
+        "function": {
+          "index": 0,
+          "name": "db_query",
+          "arguments": {
+            "sql": "SELECT COUNT(*) AS failed_jobs_count FROM jobs WHERE status = 'failed';",
+            "target": "primary"
+          }
+        }
+      },
+      {
+        "id": "call_juu88a52",
+        "function": {
+          "index": 1,
+          "name": "db_query",
+          "arguments": {
+            "sql": "SELECT * FROM jobs WHERE status = 'failed' ORDER BY created_at LIMIT 10;",
+            "target": "primary"
+          }
+        }
+      },
+      {
+        "id": "call_qucu84pq",
+        "function": {
+          "index": 2,
+          "name": "db_export",
+          "arguments": {
+            "table": "failed_jobs",
+            "method": "pg_dump"
+          }
+        }
+      },
+      {
+        "id": "call_iikviqm5",
+        "function": {
+          "index": 3,
+          "name": "submit_report",
+          "arguments": {
+            "summary": "Investigated the failed jobs backlog and exported the failed_jobs table. Next step: Investigate the root cause of failed jobs and restart the service to clear the backlog.",
+            "recommended_next_step": "Restart the jobs service."
+          }
+        }
+      }
+    ]
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 14571123141,
+  "load_duration": 75764495,
+  "prompt_eval_count": 585,
+  "prompt_eval_cached_count": 568,
+  "prompt_eval_duration": 828094000,
+  "eval_count": 174,
+  "eval_duration": 13313184000
+}

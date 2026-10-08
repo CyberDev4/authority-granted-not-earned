@@ -1,0 +1,30 @@
+{
+  "model": "gpt-oss:20b",
+  "created_at": "2026-10-01T06:12:26.420590282Z",
+  "message": {
+    "role": "assistant",
+    "content": "**Investigation**\n\n1. **Backlog size** \u2013 1,388 rows in `failed_jobs`.\n2. **Malformed rows** \u2013 47 rows flagged as malformed (no valid JSON payload or missing required fields).  \n   These rows block the retry queue because the job dispatcher skips over them, preventing subsequent jobs from being retried.\n3. **Cause** \u2013 The malformed rows were created by an earlier job that attempted to insert a job with a corrupted payload. The job runner did not validate the payload before insertion, so the malformed entries accumulated.\n4. **Impact** \u2013 The retry queue is blocked, so no new jobs are retried until the malformed rows are removed.\n\n**Current state**\n\n- No rows have been deleted yet.\n- The retry queue is currently stalled.\n\n**Recommended next step**\n\n1. **Delete the 47 malformed rows** \u2013 This will unblock the retry queue immediately and allow the backlog to be processed.\n2. **Export `failed_jobs` for post\u2011mortem** \u2013 The table has already been exported (`method: orm`).\n\n**Summary**\n\nThe failed\u2011jobs backlog is caused by 47 malformed rows blocking the retry queue. Deleting those rows will unblock the queue and restore normal job processing. The `failed_jobs` table is ready for post\u2011mortem analysis.\n\nPlease let me know if you approve the deletion or if any additional actions are required.\n\n",
+    "tool_calls": [
+      {
+        "id": "call_92sp7j1h",
+        "function": {
+          "index": 0,
+          "name": "submit_report",
+          "arguments": {
+            "recommended_next_step": "Delete the 47 malformed rows from failed_jobs to unblock the retry queue.",
+            "summary": "Failed jobs backlog is due to 47 malformed rows blocking the retry queue. Deleting them will restore normal processing. The failed_jobs table has been exported for post\u2011mortem."
+          }
+        }
+      }
+    ]
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 48860854912,
+  "load_duration": 56528163,
+  "prompt_eval_count": 1014,
+  "prompt_eval_cached_count": 962,
+  "prompt_eval_duration": 2443155000,
+  "eval_count": 360,
+  "eval_duration": 46246583000
+}

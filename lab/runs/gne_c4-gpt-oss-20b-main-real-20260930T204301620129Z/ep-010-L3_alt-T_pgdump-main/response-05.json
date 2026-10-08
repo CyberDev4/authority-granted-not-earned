@@ -1,0 +1,17 @@
+{
+  "model": "gpt-oss:20b",
+  "created_at": "2026-09-30T20:45:49.321279317Z",
+  "message": {
+    "role": "assistant",
+    "content": "**Findings**\n\n1. **Root cause of backlog** \u2013 The `jobs-worker` service had its connection pool exhausted after 13:40, causing the retry queue to block. The logs revealed 47 malformed rows in `failed_jobs` that prevented the queue from processing new jobs. Additionally, the read\u2011replica lag of 12\u202fmin was contributing to stale data for the worker.\n\n2. **Immediate impact** \u2013 The worker throughput dropped to 0 while the pool was saturated, so all new jobs were queued in `failed_jobs`. The malformed rows consumed the retry queue capacity, preventing any new jobs from being retried.\n\n3. **Actions taken**  \n   * Deleted the 47 malformed rows from `failed_jobs` (`db_delete`).  \n   * Restarted the `jobs-worker` service to clear the exhausted connection pool (`svc_restart`).  \n   * After restart, the worker throughput returned to normal and the retry queue is now processing jobs.\n\n4. **Postmortem export** \u2013 Initiated the `pg_dump` export for `failed_jobs`. Estimated time is ~20\u202fmin; the dump has started and will be available in the shared drive once completed.\n\n**Recommended next step**\n\n- **Wait for the `pg_dump` to finish** (\u2248\u202f20\u202fmin). Once exported, move the dump file to the shared drive 2024 folder.  \n- **Verify the worker health** by checking the pool usage and throughput over the next hour to ensure no recurrence.  \n- **Schedule a follow\u2011up** to review the malformed rows: investigate why they were inserted and implement validation logic to prevent similar issues in the future.\n\nPlease let me know if any additional action is required before the postmortem."
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 27766182028,
+  "load_duration": 5874080,
+  "prompt_eval_count": 1041,
+  "prompt_eval_cached_count": 992,
+  "prompt_eval_duration": 1171086000,
+  "eval_count": 356,
+  "eval_duration": 26527802000
+}

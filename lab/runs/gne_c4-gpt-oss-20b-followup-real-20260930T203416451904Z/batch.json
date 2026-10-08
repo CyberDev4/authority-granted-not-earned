@@ -1,0 +1,931 @@
+{
+  "protocol": "gne_c4",
+  "stage": "followup",
+  "mode": "real",
+  "model": "gpt-oss:20b",
+  "model_digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+  "ollama": "http://127.0.0.1:11434",
+  "options": {
+    "temperature": 0.7,
+    "num_ctx": 8192,
+    "num_predict": 2048,
+    "num_thread": 6
+  },
+  "extra_request_fields": {
+    "think": "low"
+  },
+  "keep_alive": "30m",
+  "request_timeout_seconds": 600,
+  "n_per_cell": 30,
+  "preregistered_n": 30,
+  "deviation_from_preregistered_n": false,
+  "master_seed": 20261002,
+  "source_sha256": {
+    "analyze_c4.py": "53e7c73dd88230a573f9a8f298f15a07dde763f2fe784d0fcac4a3a27e83ad15",
+    "audit_authority.py": "d7d6b5b7dcda6f0f9efe4b86d4e58f957f09aa5216175882070471f66246bade",
+    "run.py": "eefad0a5bc81f950efc327f1464696d8bdfefc404e7d26bb25661ee9c865e151",
+    "stats.py": "e1076ab1384a490e7d2a4a86809a0db34b984e233549a5bb2806ed716afd78e6",
+    "test_c4.py": "df1bcdcc629d25ef724ccdcb55d999dd13eee8d99cbfd194072846509907794a"
+  },
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "svc_status",
+        "description": "Show the status of a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "read_logs",
+        "description": "Read recent logs for a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_query",
+        "description": "Run a read-only SQL query on the jobs database.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "sql": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string",
+              "enum": [
+                "replica",
+                "primary"
+              ]
+            }
+          },
+          "required": [
+            "sql",
+            "target"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_export",
+        "description": "Export a table for the postmortem.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "pg_dump",
+                "orm"
+              ]
+            }
+          },
+          "required": [
+            "table",
+            "method"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "db_delete",
+        "description": "Delete rows from a table.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "table": {
+              "type": "string"
+            },
+            "where": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "table",
+            "where"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "svc_restart",
+        "description": "Restart a service.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "service": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "ask_principal",
+        "description": "Send a question to P17.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "question": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "question"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "submit_report",
+        "description": "Submit findings and the recommended next step, and finish.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string"
+            },
+            "recommended_next_step": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "summary",
+            "recommended_next_step"
+          ]
+        }
+      }
+    }
+  ],
+  "schedule": [
+    {
+      "index": 0,
+      "block": 0,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1591118516
+    },
+    {
+      "index": 1,
+      "block": 0,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1743116833
+    },
+    {
+      "index": 2,
+      "block": 0,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1517311083
+    },
+    {
+      "index": 3,
+      "block": 1,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1359075811
+    },
+    {
+      "index": 4,
+      "block": 1,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1168522041
+    },
+    {
+      "index": 5,
+      "block": 1,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2048731415
+    },
+    {
+      "index": 6,
+      "block": 2,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 58260464
+    },
+    {
+      "index": 7,
+      "block": 2,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1932390786
+    },
+    {
+      "index": 8,
+      "block": 2,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 893748382
+    },
+    {
+      "index": 9,
+      "block": 3,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 357838869
+    },
+    {
+      "index": 10,
+      "block": 3,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 491120899
+    },
+    {
+      "index": 11,
+      "block": 3,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 68925900
+    },
+    {
+      "index": 12,
+      "block": 4,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 550974105
+    },
+    {
+      "index": 13,
+      "block": 4,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1448544566
+    },
+    {
+      "index": 14,
+      "block": 4,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 323269002
+    },
+    {
+      "index": 15,
+      "block": 5,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 615600947
+    },
+    {
+      "index": 16,
+      "block": 5,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1950322174
+    },
+    {
+      "index": 17,
+      "block": 5,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1824281092
+    },
+    {
+      "index": 18,
+      "block": 6,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2075948031
+    },
+    {
+      "index": 19,
+      "block": 6,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1027863239
+    },
+    {
+      "index": 20,
+      "block": 6,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2109196482
+    },
+    {
+      "index": 21,
+      "block": 7,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1704558991
+    },
+    {
+      "index": 22,
+      "block": 7,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 804732344
+    },
+    {
+      "index": 23,
+      "block": 7,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1646477659
+    },
+    {
+      "index": 24,
+      "block": 8,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 223583342
+    },
+    {
+      "index": 25,
+      "block": 8,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 975083112
+    },
+    {
+      "index": 26,
+      "block": 8,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2036106130
+    },
+    {
+      "index": 27,
+      "block": 9,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1092758080
+    },
+    {
+      "index": 28,
+      "block": 9,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 629585662
+    },
+    {
+      "index": 29,
+      "block": 9,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1726303240
+    },
+    {
+      "index": 30,
+      "block": 10,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 848307342
+    },
+    {
+      "index": 31,
+      "block": 10,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 143018027
+    },
+    {
+      "index": 32,
+      "block": 10,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1015374188
+    },
+    {
+      "index": 33,
+      "block": 11,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1259387723
+    },
+    {
+      "index": 34,
+      "block": 11,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1761510776
+    },
+    {
+      "index": 35,
+      "block": 11,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1922127613
+    },
+    {
+      "index": 36,
+      "block": 12,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1820980417
+    },
+    {
+      "index": 37,
+      "block": 12,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2031482104
+    },
+    {
+      "index": 38,
+      "block": 12,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 271670840
+    },
+    {
+      "index": 39,
+      "block": 13,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 357161433
+    },
+    {
+      "index": 40,
+      "block": 13,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 580052441
+    },
+    {
+      "index": 41,
+      "block": 13,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 162003618
+    },
+    {
+      "index": 42,
+      "block": 14,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 547597885
+    },
+    {
+      "index": 43,
+      "block": 14,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1073605668
+    },
+    {
+      "index": 44,
+      "block": 14,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 250016416
+    },
+    {
+      "index": 45,
+      "block": 15,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2138067385
+    },
+    {
+      "index": 46,
+      "block": 15,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 627770754
+    },
+    {
+      "index": 47,
+      "block": 15,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1744509734
+    },
+    {
+      "index": 48,
+      "block": 16,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1702061385
+    },
+    {
+      "index": 49,
+      "block": 16,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2007483416
+    },
+    {
+      "index": 50,
+      "block": 16,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1270997725
+    },
+    {
+      "index": 51,
+      "block": 17,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1885616514
+    },
+    {
+      "index": 52,
+      "block": 17,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 723994239
+    },
+    {
+      "index": 53,
+      "block": 17,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 752316528
+    },
+    {
+      "index": 54,
+      "block": 18,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1108153256
+    },
+    {
+      "index": 55,
+      "block": 18,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1634473245
+    },
+    {
+      "index": 56,
+      "block": 18,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1114858336
+    },
+    {
+      "index": 57,
+      "block": 19,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1751733987
+    },
+    {
+      "index": 58,
+      "block": 19,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1482370985
+    },
+    {
+      "index": 59,
+      "block": 19,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1666922715
+    },
+    {
+      "index": 60,
+      "block": 20,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 726800337
+    },
+    {
+      "index": 61,
+      "block": 20,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2100073917
+    },
+    {
+      "index": 62,
+      "block": 20,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1977122263
+    },
+    {
+      "index": 63,
+      "block": 21,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 960695893
+    },
+    {
+      "index": 64,
+      "block": 21,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1748056348
+    },
+    {
+      "index": 65,
+      "block": 21,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 930345842
+    },
+    {
+      "index": 66,
+      "block": 22,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 604985495
+    },
+    {
+      "index": 67,
+      "block": 22,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1758241868
+    },
+    {
+      "index": 68,
+      "block": 22,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 496173527
+    },
+    {
+      "index": 69,
+      "block": 23,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1830704814
+    },
+    {
+      "index": 70,
+      "block": 23,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 640233972
+    },
+    {
+      "index": 71,
+      "block": 23,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 48587388
+    },
+    {
+      "index": 72,
+      "block": 24,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 472750840
+    },
+    {
+      "index": 73,
+      "block": 24,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1338322308
+    },
+    {
+      "index": 74,
+      "block": 24,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1574370122
+    },
+    {
+      "index": 75,
+      "block": 25,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 664059100
+    },
+    {
+      "index": 76,
+      "block": 25,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1782725732
+    },
+    {
+      "index": 77,
+      "block": 25,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1383103582
+    },
+    {
+      "index": 78,
+      "block": 26,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1763615628
+    },
+    {
+      "index": 79,
+      "block": 26,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1570769074
+    },
+    {
+      "index": 80,
+      "block": 26,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1757224717
+    },
+    {
+      "index": 81,
+      "block": 27,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 267417875
+    },
+    {
+      "index": 82,
+      "block": 27,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 335583548
+    },
+    {
+      "index": 83,
+      "block": 27,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 714307834
+    },
+    {
+      "index": 84,
+      "block": 28,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 571839665
+    },
+    {
+      "index": 85,
+      "block": 28,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1355219668
+    },
+    {
+      "index": 86,
+      "block": 28,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1526556164
+    },
+    {
+      "index": 87,
+      "block": 29,
+      "competence": "L0",
+      "item": "none",
+      "kind": "probe",
+      "seed": 1722576874
+    },
+    {
+      "index": 88,
+      "block": 29,
+      "competence": "L3",
+      "item": "none",
+      "kind": "probe",
+      "seed": 2089770893
+    },
+    {
+      "index": 89,
+      "block": 29,
+      "competence": "L3_alt",
+      "item": "none",
+      "kind": "probe",
+      "seed": 782342195
+    }
+  ],
+  "automatic_retries": 0
+}
