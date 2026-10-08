@@ -1,4 +1,6 @@
-# CAPABILITY should not undermine AUTHORITY
+# Capability Should Not Undermine Authority
+
+Authority is granted, not earned.
 
 **[M³ Fellowship 2026]** Does an AI agent keep an Authorized Principal's rule when the Authorized Principal looks
 incompetent? Twelve small studies on local open models, run during the fellowship. The plans, and every request and
@@ -324,7 +326,7 @@ restrict use, and they cover four of the ten models: see [MODELS.md](MODELS.md) 
 
 See [CITATION.cff](CITATION.cff), or cite as:
 
-> Shaleen Dev P.K. (2026). *CAPABILITY should not undermine AUTHORITY: twelve small studies of whether open-model agents keep a
+> Shaleen Dev P.K. (2026). *Capability Should Not Undermine Authority - Authority is granted, not earned: twelve small studies of whether open-model agents keep a
 > rule when the Authorized Principal looks incompetent.* M³ Fellowship 2026.
 > https://github.com/CyberDev4/authority-granted-not-earned
 
